@@ -15,7 +15,8 @@ const TodoList = () => {
 
     const [searchItem, setSearchItem] = useState("");
 
-    console.log(searchItem);
+    const [sortOption, setSortOption] = useState("");
+
     const taskHandler = (e) => {
         const name = e.target.name;
         let value = e.target.value;
@@ -44,23 +45,50 @@ const TodoList = () => {
         setTasks(updatedTask);
     }
 
+
+    const sortedTasks = [...tasks].sort((a, b) => {
+        if(sortOption === "date"){
+            return new Date(a.date) - new Date(b.date)
+        }
+        else if(sortOption === "title"){
+            return a.title.localeCompare(b.title)
+        }
+        
+
+        return 0
+
+    });
+
+    const filterTasks = sortedTasks.filter((task) => task.title.toLowerCase().includes(searchItem));
+
+
     return (
         <div>
          
             <input type="text"  name='search' onChange={(e) => setSearchItem(e.target.value)}/>
             <div>
-                <input type="text" name="title" value={task.title} onChange={taskHandler} />
+            <label id="title">
+                Title: 
+                <input type="text" id="title" name="title" value={task.title} onChange={taskHandler} />
+            </label>
+         
                 <input type="color" name='color' value={task.color} onChange={taskHandler} />
-                <input type="date" name='date' value={task.date} onChange={taskHandler} />
+                <label  id="date">
+                    Date:
+                <input type="date"  id="date"name='date' value={task.date} onChange={taskHandler} />
+                </label>
                 <button onClick={addTask}>Add task</button>
             </div>
+
+            <button onClick={() => setSortOption("date")}>Sort by date</button>
+            <button onClick={() => setSortOption("title")}>Sort by title</button>
 
             {error && <p>{error}</p>}
 
             <div>
                 <h1>Tasks</h1>
-                {tasks.filter(task => !task.done).map((task) => (
-                    <div key={task.id}>
+                {filterTasks.filter(task => !task.done).map((task) => (
+                    <div key={task.id} style={{display: "flex", marginRight: "5px"}}>
                         <p> {task.title}</p>
                         <input type='checkbox' onClick={() => toggleDone(task.id)} checked={task.done} />
                     </div>
@@ -68,7 +96,7 @@ const TodoList = () => {
 
 
                 <h1>Done</h1>
-                {tasks.filter(task => task.done).map((task) => (
+                {filterTasks.filter(task => task.done).map((task) => (
                     <div key={task.id}>
                         <p> {task.title}</p>
                         <input type='checkbox' onClick={() => toggleDone(task.id)} checked={task.done} />
