@@ -11,6 +11,7 @@ import NotFound from './components/NotFound';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import Product from './components/Product';
+import Parent from './components/Parent';
 
 
 function App() {
@@ -21,12 +22,13 @@ function App() {
         {/* <Test />
 
         <Car type="BMW" color='red' price={200}/> */}
-
+        <Parent />
 
         <Routes>
-          <Route path='/todo' element={<TodoList />}/>
-          <Route path='/home' element={<Home/>}/>
-          <Route path='/product/:id' element={<Product/>}></Route>
+          <Route path='/todo' element={<TodoList />} />
+          <Route path='/home/*' element={<Home />} />
+          <Route path='/product/:id' element={<Product />}></Route>
+          <Route path='/test' element={<Navigate to="/todo" />}></Route>
           <Route path='/*' element={<NotFound />} />
         </Routes>
 
@@ -37,9 +39,9 @@ function App() {
   )
 }
 
-function helper(){
+function helper() {
   return <h1>Helper</h1>
 }
 
 export default App;
-export {helper};
+export { helper };

@@ -6,7 +6,11 @@ const NotFound = () => {
         <div>
     
             <Link to="/home">Go to home by link</Link>
-            Not Found 404
+            <br/>
+            <p>
+
+                Not Found 404
+            </p>
         </div>
     );
 };
